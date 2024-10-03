@@ -24,28 +24,33 @@ def random_move_arrow():
 
 def go_to_arrow(arrow_x, arrow_y):
     global boy_x, boy_y
+    if arrow_x-boy_x != 0:
+        a = (arrow_y-boy_y)/(arrow_x-boy_x)
+        b = boy_y - boy_x * a
 
-    if boy_x > arrow_x:
-        if boy_x - 10 > arrow_x:
-            boy_x -= 10
-        else:
-            boy_x -= 1
-    elif boy_x < arrow_x:
-        if boy_x + 10 < arrow_x:
-            boy_x += 10
-        else:
-            boy_x += 1
-
-    if boy_y > arrow_y:
-        if boy_y - 10 > arrow_y:
-            boy_y -= 10
-        else:
-            boy_y -= 1
-    elif boy_y < arrow_y:
-        if boy_y + 10 < arrow_y:
-            boy_y += 10
-        else:
-            boy_y += 1
+        if boy_x < arrow_x:
+            if boy_x + 10 < arrow_x:
+                boy_x += 10
+            else:
+                boy_x += 1
+        elif boy_x > arrow_x:
+            if boy_x - 10 > arrow_x:
+                boy_x -= 10
+            else:
+                boy_x -= 1
+        boy_y = int(a * boy_x + b)
+    elif arrow_x-boy_x == 0:
+        if boy_y < arrow_y:
+            if boy_y + 3 < arrow_y:
+                boy_y += 3
+            else:
+                boy_y += 1
+        elif boy_y > arrow_y:
+            if boy_y - 3 > arrow_y:
+                boy_y -= 3
+            else:
+                boy_y -= 1
+        
 
 run = True
 frame_x = 3
@@ -77,6 +82,11 @@ while run:
                 dir = 1
             elif arrow_x < boy_x:
                 dir = 0
+            elif arrow_x == boy_x:
+                if dir == 2:
+                    dir = 0
+                elif dir == 3:
+                    dir = 1
 
             go_to_arrow(arrow_x,arrow_y)
             

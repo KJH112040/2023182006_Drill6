@@ -22,23 +22,65 @@ def random_move_arrow():
     arrow_x, arrow_y = random.randrange(50,750),random.randrange(52,548)
     goal = False
 
+def go_to_arrow(arrow_x, arrow_y):
+    global boy_x, boy_y
+
+    if boy_x > arrow_x:
+        if boy_x - 10 > arrow_x:
+            boy_x -= 10
+        else:
+            boy_x -= 1
+    elif boy_x < arrow_x:
+        if boy_x + 10 < arrow_x:
+            boy_x += 10
+        else:
+            boy_x += 1
+
+    if boy_y > arrow_y:
+        if boy_y - 10 > arrow_y:
+            boy_y -= 10
+        else:
+            boy_y -= 1
+    elif boy_y < arrow_y:
+        if boy_y + 10 < arrow_y:
+            boy_y += 10
+        else:
+            boy_y += 1
+
 run = True
-frame_x = 0
+frame_x = 3
 dir = 3
+boy_x = 400
+boy_y = 300
 
 random_move_arrow()
 
 while run:
     clear_canvas()
     tuk.draw(400,300,800,600)
-    boy.clip_draw(frame_x*802//8,dir*402//4,802//8,402//4,400,300,90,90)
     arrow.draw(arrow_x,arrow_y,50,52)
+    boy.clip_draw(frame_x*802//8,dir*402//4,802//8,402//4,boy_x,boy_y,100,100)
     update_canvas()
     handle_events()
     if goal:
         random_move_arrow()
     else:
-        a=0
+        if arrow_x == boy_x and arrow_y == boy_y:
+            if dir == 0:
+                dir = 2
+            elif dir == 1:
+                dir = 3
+            frame_x = 3
+            goal = True
+        else:
+            if arrow_x > boy_x:
+                dir = 1
+            elif arrow_x < boy_x:
+                dir = 0
+
+            go_to_arrow(arrow_x,arrow_y)
+            
+            frame_x = (frame_x + 1) % 8
         
     delay(0.05)
 
